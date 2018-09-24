@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+  <form method="post" class="col s10"> {% csrf_token %}
+
+    <div class="row">
+       <div class="input-field col s5">
+         {{form.title}}
+         <label for="first_name">Title</label>
+       </div>
+    
+     </div>
+     <div class="row">
+
+        <div class="input-field col s5">
+          {{form.department}}
+          <label for="first_name">Department</label>
+        </div>
+      </div>
+
+     <div class="row">
+        <div class="input-field col s5">
+          {{form.exam_date}}
+          <label for="first_name">Exam Date</label>
+        </div>
+        <div class="input-field col s5">
+          {{form.duration}}
+          <label for="last_name">Duration</label>
+        </div>
+      </div>
+
+     <div class="row">
+        <div class="input-field col s5">
+          {{form.start_time}}
+          <label for="first_name">Start Time</label>
+        </div>
+        <div class="input-field col s5">
+          {{form.close_time}}
+          <label for="last_name">Close Time</label>
+        </div>
+      </div>
+      <button type="submit" name="button" class="waves-effect waves-light btn">Submit</button>
+  </form>
+</div>
+
+
+{% endblock %}
