@@ -1,14 +1,38 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
-
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 
 from .models import Exam
 from .forms import ExamForm
+
+
+def home(request):
+    if request.POST:
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            if user.is_superuser:
+                return redirect('exam:list')
+            # Redirect to a success page.
+            print('sucessfull login')
+            pass
+        else:
+            # Return an 'invalid login' error message.
+            print('unsucessfull login')
+            pass
+    return render(request,'base/home.html')
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('home')
 
 class ExamListView(ListView):
     queryset = Exam.objects.all()

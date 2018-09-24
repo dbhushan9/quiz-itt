@@ -17,9 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-
+from exam.views import home, logout_view
 
 urlpatterns = [
+    path('',home, name='home'),
+    path('logout/',logout_view, name='logout'),
     path('admin/', admin.site.urls),
     path('exam/',include('exam.urls'))
 ]

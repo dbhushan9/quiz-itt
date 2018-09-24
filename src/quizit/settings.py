@@ -127,3 +127,9 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR) , "static_server","static_r
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR) , "static_server","media_root")
+
+
+from django.urls import reverse_lazy
+
+LOGIN_URL = reverse_lazy('home')
+LOGOUT_URL = reverse_lazy('home')
