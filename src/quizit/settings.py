@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #userapps
     'exam',
+    'submission',
 ]
 
 MIDDLEWARE = [

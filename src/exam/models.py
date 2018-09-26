@@ -65,20 +65,6 @@ class Instruction:
             return self.text
 
 
-
-
-
-
-class Submission:
-    score
-    answer - many answers to one submission
-    def __str__(self):
-            return self.text
-
-
-class Answer:
-    question
-    Choice
 '''
 def exam_pre_save_reciever(sender, instance, *args, **kwargs):
 	if not instance.slug:
