@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block nav %}
+<a href="{% url 'exam:list' %}" class="breadcrumb">Exam List</a>
+{% endblock %}
+
 {% block content %}
 
 <div class="row">
@@ -18,7 +22,9 @@
         <div class="card-action">
           <a href="{% url 'exam:edit' exam.id %}">Edit</a>
           <a href="{% url 'exam:delete' exam.id %}">Delete</a>
-          <a href="#">Questions</a>
+          <a href="{% url 'exam:question_list' exam.slug %}">Questions</a>
+          <a href="{% url 'exam:multiple_questions' exam.slug %}">Upload</a>
+          <a href="{% url 'exam:generate_user' exam.slug %}">Generate User</a>
         </div>
       </div>
     </div>

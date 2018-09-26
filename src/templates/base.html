@@ -1,3 +1,6 @@
+{% url 'home' as login_url %}
+{% url 'logout' as logout_url %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +10,41 @@
   {% include 'base/css.html' %}
 </head>
 <body>
-{% include 'base/navbar.html' %}
+
+<!-- navbar-->
+<div class="navbar-fixed">
+    <nav class="teal nav-extended">
+      <div class="nav-wrapper">
+        <div style="padding-left:15px;" class="left hide-on-med-and-down">
+          {% block nav %}
+
+          {% endblock %}
+        </div>
+        <a href="#" class="brand-logo center" style="font-family:Permanent Marker">Quizit</a>
+        <ul class="right hide-on-med-and-down">
+          <li><a href="#">Sass</a></li>
+          <li><a href="#">Components</a></li>
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{logout_url}}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{login_url}}">Login</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+</div>
+<!-- navbar end-->
+
+
 <div class="container">
   {% block content %}
   {% endblock %}
 <div>
+
 {% include 'base/js.html' %}
 
   </body>
