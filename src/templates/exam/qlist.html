@@ -7,29 +7,31 @@
 
 
 {% block content %}
+<div class="container">
+  <div class="row">
+    {% for question in object_list %}
+      <div class="col s12 m4">
+        {{question.description}}<br>
+        {{question.marked}}<br>
+        {{question.correct_choice.all.0}}<br>
 
-<div class="row">
-  {% for question in object_list %}
-    <div class="col s12 m4">
-      {{question.description}}<br>
-      {{question.marked}}<br>
-      {{question.correct_choice.all.0}}<br>
+        {% for choice in question.choice_set.all %}
+          opt{{forloop.counter}}:<a href="{% url 'admin:exam_choice_change' choice.pk %}" target="_blank">{{choice}}</a><br>
+        {% endfor %}
+        {{question.active}}<br>
+        <a href="{% url 'admin:exam_question_change' question.pk %}" target="_blank">Edit</a>
+        <a href="{% url 'admin:exam_question_delete' question.pk %}" target="_blank">Delete</a>
+        <a href="{% url 'admin:exam_question_history' question.pk %}" target="_blank">History</a>
+      </div>
+    {%endfor%}
+  </div>
 
-      {% for choice in question.choice_set.all %}
-        opt{{forloop.counter}}:<a href="{% url 'admin:exam_choice_change' choice.pk %}" target="_blank">{{choice}}</a><br>
-      {% endfor %}
-      {{question.active}}<br>
-      <a href="{% url 'admin:exam_question_change' question.pk %}" target="_blank">Edit</a>
-      <a href="{% url 'admin:exam_question_delete' question.pk %}" target="_blank">Delete</a>
-      <a href="{% url 'admin:exam_question_history' question.pk %}" target="_blank">History</a>
-    </div>
-  {%endfor%}
-</div>
+  <div class="fixed-action-btn">
+    <a class="btn-floating btn-large red" href="{% url 'exam:create' %}">
+      <i class="large material-icons">add</i>
+    </a>
+  </div>
 
-<div class="fixed-action-btn">
-  <a class="btn-floating btn-large red" href="{% url 'exam:create' %}">
-    <i class="large material-icons">add</i>
-  </a>
 </div>
 
 {% endblock %}

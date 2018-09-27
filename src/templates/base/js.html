@@ -2,9 +2,11 @@
 <!--  Scripts-->
 <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
 <script src="{% static 'js/materialize.js' %}"></script>
-<script src="{% static 'js/js/init.js' %}"></script>
 <script type="text/javascript">
 $(document).ready(function(){
   $('select').formSelect();
+});
+$(document).ready(function(){
+  $('.tabs').tabs();
 });
 </script>

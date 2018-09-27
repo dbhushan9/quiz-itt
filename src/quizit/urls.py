@@ -23,7 +23,8 @@ urlpatterns = [
     path('',home, name='home'),
     path('logout/',logout_view, name='logout'),
     path('admin/', admin.site.urls),
-    path('exam/',include('exam.urls'))
+    path('exam/',include('exam.urls')),
+    path('',include('submission.urls'))
 ]
 
 

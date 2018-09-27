@@ -26,13 +26,15 @@ def home(request):
             login(request, user)
             if user.is_superuser:
                 return redirect('exam:list')
-            # Redirect to a success page.
-            print('sucessfull login')
-            pass
+            else:
+                return redirect('submission:exam_instruction')
+
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('exam:list')
         else:
-            # Return an 'invalid login' error message.
-            print('unsucessfull login')
-            pass
+            return redirect('submission:exam_instruction')
+
     return render(request,'base/home.html')
 
 @login_required
@@ -79,6 +81,7 @@ def DeleteExamView(request,id):
     print('successful delete')
     return redirect('exam:list')
 
+@login_required
 def QuestionListView(request,slug):
     exam_obj = Exam.objects.get(slug=slug)
     que_objs = Question.objects.filter(exam=exam_obj)
@@ -129,6 +132,7 @@ def CreateMultipleQuestionView(request,slug):
     else:
         return render(request,'exam/excel_question.html',context)
 
+@login_required
 def question_excel(request):
     excel_data = [
         ['Question Description','correct','option1','option2','option3','option4']
@@ -143,7 +147,9 @@ def question_excel(request):
     wb.save(response)
     return response
 
+
 User = get_user_model()
+@login_required
 def get_users(request,slug):
     try:
         exam_obj = Exam.objects.get(slug=slug)
@@ -156,7 +162,7 @@ def get_users(request,slug):
         user_name = generate_random_username(exam=str(exam_obj))
         #print( User.objects.make_random_password())
         password = User.objects.make_random_password()
-        new_user = User.objects.create_user(user_name,password)
+        new_user = User.objects.create_user(user_name,'dummy@email.com',password)
         exam_obj.students.add(new_user)
         sheet.cell(row=i+1, column=1).value = user_name
         sheet.cell(row=i+1, column=2).value = password

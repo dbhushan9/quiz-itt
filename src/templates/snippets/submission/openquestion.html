@@ -1,0 +1,15 @@
+
+<script type="text/javascript">
+
+function openQuestion(evt, question_id) {
+   evt.preventDefault();
+    $(".tabcontent").each( function() {
+      $(this).css("display", "none");
+    });
+    $(".tablinks").each( function() {
+      $(this).removeClass('green');
+    });
+    $('#'+question_id).css('display','block')
+    evt.currentTarget.className += " green";
+}
+</script>
