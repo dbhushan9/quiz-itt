@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(r_mpam5y0o%&w!trfm-8m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://quiz-itt.herokuapp.com/']
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 CORS_REPLACE_HTTPS_REFERER      = True
 HOST_SCHEME                     = "https://"
