@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'r_mpam5y0o%&w!trfm-8m59bh)9pv4bpewox0h*rsoi4&pi%4b'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'SOME+RANDOM+KEY(r_mpam5y0o%&w!trfm-8m59bh)9pv4bpewox0h*rsoi4&pi%4bdsad')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://quiz-itt.herokuapp.com/']
 
 CORS_REPLACE_HTTPS_REFERER      = True
 HOST_SCHEME                     = "https://"
@@ -91,11 +91,16 @@ WSGI_APPLICATION = 'quizit.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
+
+import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
+#DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Password validation
