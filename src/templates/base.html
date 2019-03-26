@@ -16,15 +16,13 @@
 <div class="navbar-fixed">
     <nav class="teal nav-extended">
       <div class="nav-wrapper">
-        <div style="padding-left:15px;" class="left hide-on-med-and-down">
+        <div style="padding-left:15px;" class="left">
           {% block nav %}
 
           {% endblock %}
         </div>
         <a href="#" class="brand-logo center" style="font-family:Permanent Marker">Quizit</a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#">Sass</a></li>
-          <li><a href="#">Components</a></li>
+        <ul class="right">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{{logout_url}}">Logout</a>

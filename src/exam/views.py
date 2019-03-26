@@ -18,24 +18,39 @@ from .forms import ExamForm
 from .utils import generate_random_username
 
 def home(request):
+    context ={}
     if request.POST:
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            if user.is_superuser:
-                return redirect('exam:list')
-            else:
-                return redirect('submission:exam_instruction')
-
+        try:
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                if user.is_superuser:
+                    return redirect('exam:list')
+                else:
+                    return redirect('submission:home')
+        except:
+            context = {'username':'User does not Exist'}
+        
     if request.user.is_authenticated:
         if request.user.is_superuser:
             return redirect('exam:list')
         else:
-            return redirect('submission:exam_instruction')
-
-    return render(request,'base/home.html')
+            return redirect('submission:home')
+    
+    if request.POST:
+      
+        try:
+            user = User.objects.get(username=username)
+        except:
+            print('user not found')
+            context = {'username':'User does not Exist'}
+        if 'user' not in context.keys():
+            print('pass mismatch')
+            context = {'password':'Password is Invalid'}
+    print("context",context)
+    return render(request,'base/home.html',context)
 
 @login_required
 def logout_view(request):
@@ -87,7 +102,8 @@ def QuestionListView(request,slug):
     que_objs = Question.objects.filter(exam=exam_obj)
     print(que_objs)
     context = {
-        'object_list':que_objs
+        'object_list':que_objs,
+        'exam':exam_obj,
     }
     return render(request,'exam/qlist.html', context)
 
@@ -147,27 +163,66 @@ def question_excel(request):
     wb.save(response)
     return response
 
+@login_required
+def question_user(request):
+    excel_data = [
+        ['Username','Password']
+    ]
+    if excel_data:
+        wb = Workbook(write_only=True)
+        ws = wb.create_sheet('Sheet1')
+        for line in excel_data:
+            ws.append(line)
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=Quizit_users.xlsx'
+    wb.save(response)
+    return response
+
+
 
 User = get_user_model()
 @login_required
-def get_users(request,slug):
-    try:
-        exam_obj = Exam.objects.get(slug=slug)
-    except:
-        return redirect('exam:list')
-    wb = Workbook()
-    #ws = wb.create_sheet('Users')
-    sheet=wb.active
-    for i in range(5):
-        user_name = generate_random_username(exam=str(exam_obj))
-        #print( User.objects.make_random_password())
-        password = User.objects.make_random_password()
-        new_user = User.objects.create_user(user_name,'dummy@email.com',password)
-        exam_obj.students.add(new_user)
-        sheet.cell(row=i+1, column=1).value = user_name
-        sheet.cell(row=i+1, column=2).value = password
+def get_users(request):
 
-    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = f'attachment; filename={exam_obj}_users.xlsx'
-    wb.save(response)
-    return response
+    if request.POST:
+        try:
+            wb = load_workbook(request.FILES['excel_file'])
+            sheet_ranges = wb['Sheet1']
+            n=2; c1 = "A"+str(n); c2 = "B"+str(n);
+            while True:
+                if sheet_ranges[c1].value:
+                    try:
+                        user_name =str(sheet_ranges[c1].value)
+                        password = str(sheet_ranges[c2].value)
+                        new_user = User.objects.create_user(user_name,'dummy@email.com',password)
+                    except Exception as e:
+                        print('exception2',e)
+                else:
+                    break
+                n=n+1; c1 = "A"+str(n); c2 = "B"+str(n);
+        except Exception as e:
+            print('exception1',e)
+            return render(request,'exam/excel_users.html')
+        return redirect('exam:list')
+    else:
+        return render(request,'exam/excel_users.html')
+
+
+
+
+    # wb = Workbook()
+    # #ws = wb.create_sheet('Users')
+    # sheet=wb.active
+    # for i in range(5):
+    #     user_name = generate_random_username(exam=str(exam_obj))
+    #     #print( User.objects.make_random_password())
+    #     password = User.objects.make_random_password()
+    #     new_user = User.objects.create_user(user_name,'dummy@email.com',password)
+    #     exam_obj.students.add(new_user)
+    #     sheet.cell(row=i+1, column=1).value = user_name
+    #     sheet.cell(row=i+1, column=2).value = password
+
+    # response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    # response['Content-Disposition'] = f'attachment; filename={exam_obj}_users.xlsx'
+    # wb.save(response)
+    # return response

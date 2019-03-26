@@ -14,17 +14,16 @@
             <span class="card-title center"><b>{{exam.title | title}}</b></span>
             <hr/>
             <p>{{exam.description | truncatechars:20}}</p>
-            <p>{{exam.exam_date}}</p>
-            <p>{{exam.start_time}}</p>
-            <p>{{exam.close_time}}</p>
-            <p>{{exam.duration}}</p>
+            <p><span class="col span s4">Date</span>    : {{exam.exam_date}}</p>
+            <p><span class="col span s4">Start</span>   : {{exam.start_time}}</p>
+            <p><span class="col span s4">End</span>   : {{exam.close_time}}</p>
+            <p><span class="col span s4">Duration</span> : {{exam.duration}}</p>
           </div>
           <div class="card-action">
             <a href="{% url 'exam:edit' exam.id %}">Edit</a>
             <a href="{% url 'exam:delete' exam.id %}">Delete</a>
             <a href="{% url 'exam:question_list' exam.slug %}">Questions</a>
             <a href="{% url 'exam:multiple_questions' exam.slug %}">Upload</a>
-            <a href="{% url 'exam:generate_user' exam.slug %}">Generate User</a>
           </div>
         </div>
       </div>
@@ -32,11 +31,22 @@
   </div>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large red" href="{% url 'exam:create' %}">
+    <a class="btn-floating btn-large teal" >
       <i class="large material-icons">add</i>
     </a>
+    <ul>
+      <li><a class="btn-floating green" href="{% url 'exam:generate_user' %}"><i class="large material-icons">account_box</i></a></li>
+      <li><a class="btn-floating blue" href="{% url 'exam:create' %}"><i class="material-icons">assignment</i></a></li>
+    </ul> 
   </div>
 
 </div>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.fixed-action-btn');
+    var instances = M.FloatingActionButton.init(elems, {
+      direction: 'left'
+    });
+  });
+  </script>
 {% endblock %}

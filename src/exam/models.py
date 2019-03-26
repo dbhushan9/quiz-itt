@@ -51,7 +51,7 @@ class Choice(models.Model):
             return self.description
 
 class AnswerKey(models.Model):
-    question        = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='correct_choice')
+    question        = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answer_key')
     choice          = models.ForeignKey(Choice, on_delete=models.CASCADE)
     def __str__(self):
             return f"{self.question}:{self.choice}"

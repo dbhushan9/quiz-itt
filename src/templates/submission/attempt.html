@@ -1,19 +1,20 @@
 {% extends 'base.html' %}
-
+{% load spacify %}
+{% load shuffle %}
 {% block nav%}
   <h5 class="brand-logo" id="timer"></h3>
 {% endblock%}
 
 {% block content %}
 
-<form id="myform" action="{% url 'submission:attempt' %}" method="post">{% csrf_token%}
+<form autocomplete="off" id="myform" action="{% url 'submission:attempt' %}" method="post">{% csrf_token%}
 <div class="row">
   <div class="col s2">
       <div class="my_tab">
         <div class="row">
-            {% for question in exam.question_set.all %}
+            {% for question in questions %}
             <div class="col s4" style="padding:4px 3px;padding-top:4px;">
-              <button style="width:100%"  {% if forloop.first %} class="btn  tablinks green" {% else %} class="btn tablinks" {% endif %}onclick="openQuestion(event, {{question.id}})">{{forloop.counter}}</button>
+              <button id='B{{question.id}}' style="width:100%"  {% if forloop.first %} class="btn  tablinks red yellow" {% else %} class="btn tablinks" {% endif %}onclick="openQuestion(event, {{question.id}})">{{forloop.counter}}</button>
             </div>
             {% endfor %}
         </div>
@@ -25,12 +26,12 @@
     <div class="container">
 
       <!--form  action="#" -->
-      {% for question in exam.question_set.all %}
+      {% for question in questions %}
         <div id="{{question.id}}" class="col s12 tabcontent" {% if forloop.first %} style="" {% else %}style="display:none" {% endif %}>
-          <h4>{{forloop.counter}}. {{question.description}}</h4><br>
+          <h5>{{forloop.counter}}.{{question.description |linebreaksbr }}</h5><br>
 
             {% for choice in question.choice_set.all %}
-              <p><label><input class="with-gap" name="{{question.pk}}" type="radio" value='{{choice.id}}' /><span>{{choice.description}}</span></label></p>
+              <p><label><input class="with-gap" name="B{{question.pk}}" type="radio" onclick="color(event,this.name)" value='{{choice.id}}' {% if question.answer_set.all.0.selected_choice == choice  %}checked{% endif %}/><span>{{choice.description |linebreaksbr  }}</span></label></p>
             {% endfor %}
 
         </div>
@@ -40,6 +41,21 @@
   </div>
 </div>
 </form>
+
+<script type="text/javascript">
+
+  function color(evt, question_id) {
+    
+      $(".tablinks").each( function() {
+        $(this).removeClass('yellow');
+        $(this).removeClass('red');
+      });
+      $('#'+question_id).css('display','block')
+      $('#'+question_id).addClass(" green");
+      console.log(evt.currentTarget.className)
+  }
+</script>
+
 
 {% include 'snippets/submission/timer.html' with date_string=date_string %}
 {% include 'snippets/submission/openquestion.html' %}

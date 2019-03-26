@@ -11,5 +11,6 @@ urlpatterns = [
     path('<slug:slug>/questions/', views.QuestionListView, name='question_list'),
     path('<slug:slug>/multiple_questions/', views.CreateMultipleQuestionView, name='multiple_questions'),
     path('excel/questions',views.question_excel,name='question_excel'),
-    path('<slug:slug>/generate_user/',views.get_users,name='generate_user'),
+    path('excel/users',views.question_user,name='question_user'),
+    path('generate_user/',views.get_users,name='generate_user'),
 ]

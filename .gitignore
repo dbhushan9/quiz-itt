@@ -1,0 +1,4 @@
+*.pyc
+*.pyo
+*.sqllite3
+/.vscode

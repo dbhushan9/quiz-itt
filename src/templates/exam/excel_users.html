@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block nav %}
+<a href="{% url 'exam:list' %}" class="breadcrumb">Exam List</a>
+<a href="#!" class="breadcrumb">Generate Users</a>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+   <div class="row no-padding">
+
+      <div class="col s10 m8 offset-m2">
+          <div class="card">
+           <form method="post" enctype="multipart/form-data">{% csrf_token %}
+            <div class="card-content">
+               <span class="card-title black-text center-align"><b style="font-weight: 600;">Upload User Excel-Sheet</b></span>
+
+                  <div class="row">
+                    <div class="file-field input-field col s12">
+                      <div class="btn">
+                        <span>Browse</span>
+                        <input name="excel_file" id="excel_file" type="file">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <input  class="file-path validate"  placeholder="upload Excel file here" type="text">
+                      </div>
+                    </div>
+                  </div>
+
+            </div>
+            <div class="card-action center">
+              <div class="row center">
+                <div class="col s6">
+                  <button class="btn" type="submit"> Upload </button>
+                </div>
+                <div class="col s6">
+                  <a class="btn" href={% url "exam:question_user"  %}>Template</a></span>
+                </div>
+              </div>
+            </div>
+          </form>
+         </div>
+      </div>
+
+   </div>
+</div>
+
+{% endblock %}

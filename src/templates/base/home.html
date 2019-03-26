@@ -40,16 +40,22 @@
             <div class="card-content">
                <span class="card-title black-text center-align"><b style="font-weight: 600;">Log-In</b></span>
                
+               <div class="row">
+                  <div class="input-field col s12">
+                  </div>
+               </div>
                   <div class="row">
                      <div class="input-field col s12">
-                        <input  id="username" name="username" type="text" class="validate">
+                        <input  id="username" name="username" type="text" {% if username %}class="validate invalid"{% else %} class="validate" {% endif %} >
                         <label for="username" class="active"><b>First Name</b></label>
+                        <span class="helper-text" data-error="{{username}}" ></span>
                      </div>
                   </div>
                   <div class="row">
                      <div class="input-field col s12">
-                        <input id="password" name="password" type="password" class="validate">
-                        <label for="password" class="active"><b>Last Name</b></label>
+                        <input id="password" name="password" type="password" {% if password %}class="validate invalid"{% else %} class="validate" {% endif %} >
+                        <label for="password" class="active"><b>Password</b></label>
+                        <span class="helper-text" data-error="{{password}}"></span>
                      </div>
                   </div>
 

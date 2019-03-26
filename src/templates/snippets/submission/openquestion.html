@@ -7,9 +7,9 @@ function openQuestion(evt, question_id) {
       $(this).css("display", "none");
     });
     $(".tablinks").each( function() {
-      $(this).removeClass('green');
+      $(this).removeClass('yellow');
     });
     $('#'+question_id).css('display','block')
-    evt.currentTarget.className += " green";
+    evt.currentTarget.className += " red yellow";
 }
 </script>

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+
+{% block content%}
+<div class="container">
+    <div class="row">
+      {% for exam in exam_list %}
+        <div class="col s12 m4">
+          <div class="card ">
+            <div class="card-content ">
+              <span class="card-title center"><b>{{exam.title | title}}</b></span>
+              <hr/>
+              <p>{{exam.description | truncatechars:20}}</p>
+              <p><span class="col span s4">Date</span>    : {{exam.exam_date}}</p>
+              <p><span class="col span s4">Start</span>   : {{exam.start_time}}</p>
+              <p><span class="col span s4">End</span>   : {{exam.close_time}}</p>
+              <p><span class="col span s4">Duration</span> : {{exam.duration}}</p>
+            </div>
+            <div class="card-action center">
+              <a href="{% url 'submission:exam_instruction' exam.id %}">Attempt</a>
+            </div>
+          </div>
+        </div>
+      {%endfor%}
+    </div>  
+</div>
+{% endblock %}
