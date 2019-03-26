@@ -10,7 +10,7 @@
           {% endblock %}
         </div>
 
-        <a href="#" class="brand-logo center" style="font-family:Permanent Marker">Quizit</a>
+        <a href="{{login_url}}" class="brand-logo center" style="font-family:Permanent Marker">Quizit</a>
 
         <ul class="right">
           {% if request.user.is_authenticated %}

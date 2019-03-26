@@ -7,12 +7,12 @@
 
 {% block content %}
 
-<form autocomplete="off" id="myform" action="{% url 'submission:attempt' %}" method="post">{% csrf_token%}
+<form  id="myform" action="{% url 'submission:attempt' exam.id %}" method="post">{% csrf_token%}
 <div class="row">
   <div class="col s2">
       <div class="my_tab">
         <div class="row">
-            {% for question in questions %}
+            {% for question in exam.question_set.all %}
             <div class="col s4" style="padding:4px 3px;padding-top:4px;">
               <button id='B{{question.id}}' style="width:100%"  {% if forloop.first %} class="btn  tablinks red yellow" {% else %} class="btn tablinks" {% endif %}onclick="openQuestion(event, {{question.id}})">{{forloop.counter}}</button>
             </div>
@@ -26,12 +26,12 @@
     <div class="container">
 
       <!--form  action="#" -->
-      {% for question in questions %}
+      {% for question in exam.question_set.all %}
         <div id="{{question.id}}" class="col s12 tabcontent" {% if forloop.first %} style="" {% else %}style="display:none" {% endif %}>
           <h5>{{forloop.counter}}.{{question.description |linebreaksbr }}</h5><br>
 
             {% for choice in question.choice_set.all %}
-              <p><label><input class="with-gap" name="B{{question.pk}}" type="radio" onclick="color(event,this.name)" value='{{choice.id}}' {% if question.answer_set.all.0.selected_choice == choice  %}checked{% endif %}/><span>{{choice.description |linebreaksbr  }}</span></label></p>
+              <p><label><input class="with-gap" name="{{question.pk}}" type="radio" onclick="color(event,this.name)" value='{{choice.id}}' {% if question.answer_set.all.0.selected_choice == choice  %}checked{% endif %}/><span>{{choice.description |linebreaksbr  }}</span></label></p>
             {% endfor %}
 
         </div>
@@ -50,8 +50,8 @@
         $(this).removeClass('yellow');
         $(this).removeClass('red');
       });
-      $('#'+question_id).css('display','block')
-      $('#'+question_id).addClass(" green");
+      $('#B'+question_id).css('display','block')
+      $('#B'+question_id).addClass(" green");
       console.log(evt.currentTarget.className)
   }
 </script>

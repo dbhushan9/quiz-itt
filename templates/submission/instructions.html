@@ -3,8 +3,18 @@
 
 {% block content%}
 <div class="container">
-  <h1>Instructions</h1>
-    {{exam}}<br>
-  <a class="btn" href="{% url 'submission:attempt' %}">Start Exam</a>
+  <h1>Instructions for {{exam}}</h1><hr>
+  <ol>
+  	<li>Select Most Appropriate Choice</li>
+  	<li>Click Finish Button after you have completed yoyur test</li>
+  	<li>In current version you can View you Score only Once at the end of the Exam</li>
+  	<li>Let me know if this should be continued or we should move to another platform</li>
+  	<li>Inform Me about any Bugs / Dead Links </li>
+  	<li>Let me know if some changes are to be made</li>
+  </ol>
+  <a class="btn" href="{% url 'submission:attempt' exam.id %}">Start Exam</a>
+  {% if error %}
+    <h2>{{error}}</h2> 
+  {% endif %}
 </div>
 {% endblock %}

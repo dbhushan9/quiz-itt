@@ -19,6 +19,13 @@ from .utils import generate_random_username
 
 def home(request):
     context ={}
+    
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
+            return redirect('exam:list')
+        else:
+            return redirect('submission:home')
+    
     if request.POST:
         try:
             username = request.POST.get('username')
@@ -33,11 +40,6 @@ def home(request):
         except:
             context = {'username':'User does not Exist'}
         
-    if request.user.is_authenticated:
-        if request.user.is_superuser:
-            return redirect('exam:list')
-        else:
-            return redirect('submission:home')
     
     if request.POST:
       
@@ -51,6 +53,10 @@ def home(request):
             context = {'password':'Password is Invalid'}
     print("context",context)
     return render(request,'base/home.html',context)
+
+def homepage(request):
+    user = request.user
+
 
 @login_required
 def logout_view(request):
