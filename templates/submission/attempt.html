@@ -7,13 +7,13 @@
 
 {% block content %}
 
-<form  id="myform" action="{% url 'submission:attempt' exam.id %}" method="post">{% csrf_token%}
+<form autocomplete="off" id="myform" action="{% url 'submission:attempt' exam.id %}" method="post">{% csrf_token%}
 <div class="row">
   <div class="col s2">
       <div class="my_tab">
         <div class="row">
             {% for question in exam.question_set.all %}
-            <div class="col s4" style="padding:4px 3px;padding-top:4px;">
+            <div class="col s3" style="padding:4px 3px;padding-top:4px;">
               <button id='B{{question.id}}' style="width:100%"  {% if forloop.first %} class="btn  tablinks red yellow" {% else %} class="btn tablinks" {% endif %}onclick="openQuestion(event, {{question.id}})">{{forloop.counter}}</button>
             </div>
             {% endfor %}
@@ -28,8 +28,10 @@
       <!--form  action="#" -->
       {% for question in exam.question_set.all %}
         <div id="{{question.id}}" class="col s12 tabcontent" {% if forloop.first %} style="" {% else %}style="display:none" {% endif %}>
-          <h5>{{forloop.counter}}.{{question.description |linebreaksbr }}</h5><br>
-
+          <h5>{{forloop.counter}}. {{question.description |linebreaksbr }}</h5><br>
+          {% if question.code %}
+            <div style="padding: 2%;background-color: LightGrey;"><code style="" class="center">{{question.code |linebreaksbr |spacify }}</code></div>
+          {% endif %}
             {% for choice in question.choice_set.all %}
               <p><label><input class="with-gap" name="{{question.pk}}" type="radio" onclick="color(event,this.name)" value='{{choice.id}}' {% if question.answer_set.all.0.selected_choice == choice  %}checked{% endif %}/><span>{{choice.description |linebreaksbr  }}</span></label></p>
             {% endfor %}
@@ -45,12 +47,12 @@
 <script type="text/javascript">
 
   function color(evt, question_id) {
-    
-      $(".tablinks").each( function() {
-        $(this).removeClass('yellow');
-        $(this).removeClass('red');
-      });
-      $('#B'+question_id).css('display','block')
+  
+      $('#B'+question_id).css('display','block');
+      
+      $('#B'+question_id).removeClass("red");
+      $('#B'+question_id).removeClass("yellow");
+      
       $('#B'+question_id).addClass(" green");
       console.log(evt.currentTarget.className)
   }

@@ -35,7 +35,8 @@ class Exam(models.Model):
 
 class Question(models.Model):
     exam            = models.ForeignKey(Exam,on_delete=models.CASCADE)
-    description     = models.CharField(max_length=255)
+    description     = models.TextField(max_length=5000)
+    code            = models.TextField(max_length=5000,blank=True)
     marked          = models.BooleanField(default=False)
     image           = models.ImageField(upload_to=upload_image_path,null=True,blank=True)
     active          = models.BooleanField(default=True)
@@ -45,7 +46,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question        = models.ForeignKey(Question, on_delete=models.CASCADE)
-    description     = models.CharField(max_length=255)
+    description     = models.TextField(max_length=5000)
 
     def __str__(self):
             return self.description

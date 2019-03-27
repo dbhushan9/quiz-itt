@@ -128,25 +128,30 @@ def CreateMultipleQuestionView(request,slug):
         try:
             wb = load_workbook(request.FILES['excel_file'])
             sheet_ranges = wb['Sheet1']
-            n=2; c1 = "A"+str(n); c2 = "B"+str(n); c3 = "C"+str(n); c4 = "D"+str(n); c5 = "E"+str(n); c6 = "F"+str(n);
+            n=2; c1 = "A"+str(n); c2 = "B"+str(n); c3 = "C"+str(n); c4 = "D"+str(n); c5 = "E"+str(n); c6 = "F"+str(n);c7= "G"+str(n);
             while True:
                 if sheet_ranges[c1].value:
                     try:
-                        question_obj = Question(description=str(sheet_ranges[c1].value),exam=exam_obj); question_obj.save()
+                        if sheet_ranges[c7].value:
+                            question_obj = Question(description=str(sheet_ranges[c1].value),code=sheet_ranges[c7].value,exam=exam_obj); question_obj.save()
+                        else:
+                            question_obj = Question(description=str(sheet_ranges[c1].value),exam=exam_obj); question_obj.save()
                         choice_list = []
                         choice1 = Choice(description=str(sheet_ranges[c3].value),question=question_obj); choice1.save();
                         choice2 = Choice(description=str(sheet_ranges[c4].value),question=question_obj); choice2.save();
                         choice3 = Choice(description=str(sheet_ranges[c5].value),question=question_obj); choice3.save();
                         choice4 = Choice(description=str(sheet_ranges[c6].value),question=question_obj); choice4.save();
-                        correct_pos = sheet_ranges[c2].value
+                        correct_pos = int(sheet_ranges[c2].value)
                         choice_list.extend([choice1, choice2, choice3, choice4])
+                        
                         choice_correct = choice_list[correct_pos -1]
+                        
                         answerKey_obj = AnswerKey(question=question_obj, choice=choice_correct); answerKey_obj.save()
                     except Exception as e:
                         print('exception2',e)
                 else:
                     break
-                n=n+1; c1 = "A"+str(n); c2 = "B"+str(n); c3 = "C"+str(n); c4 = "D"+str(n); c5 = "E"+str(n); c6 = "F"+str(n);
+                n=n+1; c1 = "A"+str(n); c2 = "B"+str(n); c3 = "C"+str(n); c4 = "D"+str(n); c5 = "E"+str(n); c6 = "F"+str(n);c7 = "G"+str(n)
         except Exception as e:
             print('exception1',e)
             return render(request,'exam/excel_question.html',context)
@@ -157,7 +162,7 @@ def CreateMultipleQuestionView(request,slug):
 @login_required
 def question_excel(request):
     excel_data = [
-        ['Question Description','correct','option1','option2','option3','option4']
+        ['Question Description','correct opt number','option1','option2','option3','option4','Code']
     ]
     if excel_data:
         wb = Workbook(write_only=True)
