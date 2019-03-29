@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 
+from submission.models import Answer
 from .models import Exam,Question,Choice,AnswerKey
 from .forms import ExamForm
 from .utils import generate_random_username
@@ -219,11 +220,13 @@ def get_users(request):
         return render(request,'exam/excel_users.html')
 
 
-
-
-    # wb = Workbook()
-    # #ws = wb.create_sheet('Users')
-    # sheet=wb.active
+# @login_required
+# def get_scorecard(request,slug):
+#     exam_obj = Exam.objects.get(slug=slug)
+#     answer_objs = Answer.objects.filter(submission.exam = exam_obj)
+#     wb = Workbook()
+#     ws = wb.create_sheet('ScoreCard')
+#     sheet=wb.active
     # for i in range(5):
     #     user_name = generate_random_username(exam=str(exam_obj))
     #     #print( User.objects.make_random_password())
