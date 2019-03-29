@@ -5,14 +5,14 @@
 <div class="container">
   <h1>Instructions for {{exam}}</h1><hr>
   <ol>
-    <li><b>Make sure your device timezone is set to UTC + 5:30 and in sync with current time<   /b></li>
+    <li><b>Make sure your device timezone is set to UTC + 5:30 and in sync with current time</b></li>
   	<li>Select Most Appropriate Choice</li>
   	<li>Click Finish Button only after you have completed your test</li>
-  	<li><b>Do Not Refresh your page</b>></li>
+  	<li><b>Do Not Refresh your page</b></li>
   	<li>Unseen Questions will be in teal(greenish blue) colored. </li>
   	<li>Unanswered Question will be Red colored </li>
   	<li>Answered Questions will be Green colored</li>
-    <li>Current Question if unanswered will be Yellow colored</li>>
+    <li>Current Question if unanswered will be Yellow colored</li>
   </ol>
   <a class="btn" href="{% url 'submission:attempt' exam.id %}">Start Exam</a>
   {% if error %}
